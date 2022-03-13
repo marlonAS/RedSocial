@@ -27,25 +27,16 @@
         <!-- ============================================================== -->
         <div class="bg-light border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">
-                Project Management
+                RED SOCIAL
             </div>
             <div class="list-group list-group-flush">
                 @if (Request.IsAuthenticated)
                 {
-                    <a href="#" class="list-group-item list-group-item-action bg-light">Projects</a>
+                    @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
+                    @Html.ActionLink("Perfil", "Index", "Profile", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
+                    @Html.ActionLink("Feed", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
+                }
 
-                    if (User.IsInRole("Admin"))
-                    {
-                        @Html.ActionLink("RolesAdmin", "Index", "RolesAdmin", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
-                        @Html.ActionLink("UsersAdmin", "Index", "UsersAdmin", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
-                    }
-                }
-                else
-                {
-                    @Html.ActionLink("Home", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
-                    @Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
-                    @Html.ActionLink("Contact", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
-                }
             </div>
         </div>
         <!-- ============================================================== -->
