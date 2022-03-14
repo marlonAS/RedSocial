@@ -180,6 +180,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="DB\AspNetRoles.cs">
       <DependentUpon>DB.tt</DependentUpon>
@@ -218,6 +219,9 @@
       <DependentUpon>DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\Posts.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\sysdiagrams.cs">
       <DependentUpon>DB.tt</DependentUpon>
     </Compile>
     <Compile Include="Filtros\VerificarSesion.cs" />
@@ -411,6 +415,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
+    <Content Include="Views\Posts\cargarPosts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

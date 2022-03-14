@@ -64,7 +64,7 @@
           <Property Name="LockoutEndDateUtc" Type="datetime" />
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" />
           <Property Name="Apellido" Type="varchar" MaxLength="50" />
           <Property Name="Foto" Type="image" />
@@ -75,7 +75,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Mensaje" Type="varchar(max)" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="256" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="PostId" Type="int" />
           <Property Name="Fecha" Type="datetime" />
         </EntityType>
@@ -84,7 +84,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="256" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="PostId" Type="int" />
           <Property Name="Fecha" Type="datetime" />
         </EntityType>
@@ -94,12 +94,31 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Mensaje" Type="varchar(max)" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="256" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="Fecha" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK_Comments_Comments' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK_Comments_Comments" />-->
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Comments_Comments">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Comments_Posts">
           <End Role="Posts" Type="Self.Posts" Multiplicity="0..1" />
           <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
@@ -168,9 +187,18 @@ warning 6035: The relationship 'FK_Comments_Comments' has columns that are not p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK_Likes_Likes' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK_Likes_Likes" />-->
+        <Association Name="FK_Likes_Likes">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Likes" Type="Self.Likes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Likes">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Likes_Posts">
           <End Role="Posts" Type="Self.Posts" Multiplicity="0..1" />
           <End Role="Likes" Type="Self.Likes" Multiplicity="*" />
@@ -183,9 +211,18 @@ warning 6035: The relationship 'FK_Likes_Likes' has columns that are not part of
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK_Posts_AspNetUsers" />-->
+        <Association Name="FK_Posts_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Posts" Type="Self.Posts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Posts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="RedSocialModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -196,6 +233,11 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
           <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Likes" EntityType="Self.Likes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Posts" EntityType="Self.Posts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Comments_Comments" Association="Self.FK_Comments_Comments">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
           <AssociationSet Name="FK_Comments_Posts" Association="Self.FK_Comments_Posts">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Comments" EntitySet="Comments" />
@@ -216,9 +258,17 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_Likes_Likes" Association="Self.FK_Likes_Likes">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Likes" EntitySet="Likes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Likes_Posts" Association="Self.FK_Likes_Posts">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Likes" EntitySet="Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Posts_AspNetUsers" Association="Self.FK_Posts_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Posts" EntitySet="Posts" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -226,6 +276,7 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
     <edmx:ConceptualModels>
       <Schema Namespace="RedSocialModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="RedSocialEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Posts" EntityType="RedSocialModel.Posts" />
           <EntitySet Name="C__MigrationHistory" EntityType="RedSocialModel.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="RedSocialModel.AspNetRoles" />
           <EntitySet Name="AspNetUserClaims" EntityType="RedSocialModel.AspNetUserClaims" />
@@ -233,7 +284,7 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
           <EntitySet Name="AspNetUsers" EntityType="RedSocialModel.AspNetUsers" />
           <EntitySet Name="Comments" EntityType="RedSocialModel.Comments" />
           <EntitySet Name="Likes" EntityType="RedSocialModel.Likes" />
-          <EntitySet Name="Posts" EntityType="RedSocialModel.Posts" />
+          <EntitySet Name="sysdiagrams" EntityType="RedSocialModel.sysdiagrams" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="RedSocialModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -241,6 +292,18 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="RedSocialModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Comments" Association="RedSocialModel.FK_Comments_Comments">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_Likes" Association="RedSocialModel.FK_Likes_Likes">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Likes" EntitySet="Likes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Posts_AspNetUsers" Association="RedSocialModel.FK_Posts_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Posts" EntitySet="Posts" />
           </AssociationSet>
           <AssociationSet Name="FK_Comments_Posts" Association="RedSocialModel.FK_Comments_Posts">
             <End Role="Posts" EntitySet="Posts" />
@@ -254,7 +317,19 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
+        <EntityType Name="Posts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mensaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUsers" Relationship="RedSocialModel.FK_Posts_AspNetUsers" FromRole="Posts" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Comments" Relationship="RedSocialModel.FK_Comments_Posts" FromRole="Posts" ToRole="Comments" />
+          <NavigationProperty Name="Likes" Relationship="RedSocialModel.FK_Likes_Posts" FromRole="Posts" ToRole="Likes" />
+          </EntityType>
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -309,12 +384,15 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
           <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="RedSocialModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="RedSocialModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="Comments" Relationship="RedSocialModel.FK_Comments_Comments" FromRole="AspNetUsers" ToRole="Comments" />
+          <NavigationProperty Name="Likes" Relationship="RedSocialModel.FK_Likes_Likes" FromRole="AspNetUsers" ToRole="Likes" />
+          <NavigationProperty Name="Posts" Relationship="RedSocialModel.FK_Posts_AspNetUsers" FromRole="AspNetUsers" ToRole="Posts" />
           <NavigationProperty Name="AspNetRoles" Relationship="RedSocialModel.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="Comments">
@@ -323,9 +401,10 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Mensaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PostId" Type="Int32" />
           <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUsers" Relationship="RedSocialModel.FK_Comments_Comments" FromRole="Comments" ToRole="AspNetUsers" />
           <NavigationProperty Name="Posts" Relationship="RedSocialModel.FK_Comments_Posts" FromRole="Comments" ToRole="Posts" />
         </EntityType>
         <EntityType Name="Likes">
@@ -333,21 +412,21 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PostId" Type="Int32" />
           <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUsers" Relationship="RedSocialModel.FK_Likes_Likes" FromRole="Likes" ToRole="AspNetUsers" />
           <NavigationProperty Name="Posts" Relationship="RedSocialModel.FK_Likes_Posts" FromRole="Likes" ToRole="Posts" />
         </EntityType>
-        <EntityType Name="Posts">
+        <EntityType Name="sysdiagrams">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="diagram_id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Mensaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Fecha" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Comments" Relationship="RedSocialModel.FK_Comments_Posts" FromRole="Posts" ToRole="Comments" />
-          <NavigationProperty Name="Likes" Relationship="RedSocialModel.FK_Likes_Posts" FromRole="Posts" ToRole="Likes" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="RedSocialModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
@@ -374,6 +453,42 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
             </Principal>
             <Dependent Role="AspNetUserLogins">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Comments">
+          <End Type="RedSocialModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="RedSocialModel.Comments" Role="Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_Likes">
+          <End Type="RedSocialModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="RedSocialModel.Likes" Role="Likes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Likes">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Posts_AspNetUsers">
+          <End Type="RedSocialModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="RedSocialModel.Posts" Role="Posts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Posts">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -411,6 +526,16 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RedSocialModelStoreContainer" CdmEntityContainer="RedSocialEntities">
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="RedSocialModel.Posts">
+              <MappingFragment StoreEntitySet="Posts">
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="RedSocialModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -474,7 +599,7 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
               <MappingFragment StoreEntitySet="Comments">
                 <ScalarProperty Name="Fecha" ColumnName="Fecha" />
                 <ScalarProperty Name="PostId" ColumnName="PostId" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -485,18 +610,19 @@ warning 6035: The relationship 'FK_Posts_AspNetUsers' has columns that are not p
               <MappingFragment StoreEntitySet="Likes">
                 <ScalarProperty Name="Fecha" ColumnName="Fecha" />
                 <ScalarProperty Name="PostId" ColumnName="PostId" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Posts">
-            <EntityTypeMapping TypeName="RedSocialModel.Posts">
-              <MappingFragment StoreEntitySet="Posts">
-                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="RedSocialModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

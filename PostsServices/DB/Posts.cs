@@ -23,9 +23,10 @@ namespace PostsServices.DB
     
         public int Id { get; set; }
         public string Mensaje { get; set; }
-        public string UserName { get; set; }
+        public string UserID { get; set; }
         public Nullable<System.DateTime> Fecha { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comments> Comments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

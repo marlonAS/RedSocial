@@ -16,10 +16,11 @@ namespace PostsServices.DB
     {
         public int Id { get; set; }
         public string Mensaje { get; set; }
-        public string UserName { get; set; }
+        public string UserID { get; set; }
         public Nullable<int> PostId { get; set; }
         public Nullable<System.DateTime> Fecha { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual Posts Posts { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace RedSocial.DB
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Posts> Posts { get; set; }
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
@@ -32,6 +33,6 @@ namespace RedSocial.DB
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Comments> Comments { get; set; }
         public virtual DbSet<Likes> Likes { get; set; }
-        public virtual DbSet<Posts> Posts { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }

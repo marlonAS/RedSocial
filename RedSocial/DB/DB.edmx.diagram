@@ -5,20 +5,24 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c3c1d61d4e3d4f8985dd8e62aee677c4" Name="Diagram1" ZoomLevel="97">
-        <EntityTypeShape EntityType="RedSocialModel.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="6.75" />
-        <EntityTypeShape EntityType="RedSocialModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="2.5" />
-        <EntityTypeShape EntityType="RedSocialModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="1" />
-        <EntityTypeShape EntityType="RedSocialModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="3.75" />
-        <EntityTypeShape EntityType="RedSocialModel.AspNetUsers" Width="1.5" PointX="3" PointY="1.125" />
-        <EntityTypeShape EntityType="RedSocialModel.Comments" Width="1.5" PointX="3" PointY="7.125" />
-        <EntityTypeShape EntityType="RedSocialModel.Likes" Width="1.5" PointX="3" PointY="10" />
-        <EntityTypeShape EntityType="RedSocialModel.Posts" Width="1.5" PointX="1.125" PointY="6" />
+        <EntityTypeShape EntityType="RedSocialModel.Posts" Width="1.5" PointX="0.5" PointY="7.75" />
+        <EntityTypeShape EntityType="RedSocialModel.C__MigrationHistory" Width="1.5" PointX="6.125" PointY="0.625" />
+        <EntityTypeShape EntityType="RedSocialModel.AspNetRoles" Width="1.5" PointX="4.75" PointY="3.5" />
+        <EntityTypeShape EntityType="RedSocialModel.AspNetUserClaims" Width="1.5" PointX="8.75" PointY="6" />
+        <EntityTypeShape EntityType="RedSocialModel.AspNetUserLogins" Width="1.5" PointX="7.25" PointY="8.625" />
+        <EntityTypeShape EntityType="RedSocialModel.AspNetUsers" Width="1.5" PointX="4.625" PointY="5.5" />
+        <EntityTypeShape EntityType="RedSocialModel.Comments" Width="1.5" PointX="2.25" PointY="5.125" />
+        <EntityTypeShape EntityType="RedSocialModel.Likes" Width="1.5" PointX="2.375" PointY="10.125" />
+        <EntityTypeShape EntityType="RedSocialModel.sysdiagrams" Width="1.5" PointX="8.125" PointY="0.625" />
         <AssociationConnector Association="RedSocialModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="RedSocialModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="RedSocialModel.FK_Comments_Comments" />
+        <AssociationConnector Association="RedSocialModel.FK_Likes_Likes" />
+        <AssociationConnector Association="RedSocialModel.FK_Posts_AspNetUsers" />
         <AssociationConnector Association="RedSocialModel.FK_Comments_Posts" />
         <AssociationConnector Association="RedSocialModel.FK_Likes_Posts" />
         <AssociationConnector Association="RedSocialModel.AspNetUserRoles" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

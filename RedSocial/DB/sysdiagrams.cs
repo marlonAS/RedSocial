@@ -12,15 +12,12 @@ namespace RedSocial.DB
     using System;
     using System.Collections.Generic;
     
-    public partial class Comments
+    public partial class sysdiagrams
     {
-        public int Id { get; set; }
-        public string Mensaje { get; set; }
-        public string UserID { get; set; }
-        public Nullable<int> PostId { get; set; }
-        public Nullable<System.DateTime> Fecha { get; set; }
-    
-        public virtual AspNetUsers AspNetUsers { get; set; }
-        public virtual Posts Posts { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }
