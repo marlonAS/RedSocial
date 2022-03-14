@@ -55,9 +55,9 @@ namespace RedSocial.Controllers
             }
             catch (Exception ex)
             {
-                if(ex.Message.Contains("An image could not be constructed from the content provided"))
+                if (ex.Message.Contains("An image could not be constructed from the content provided"))
                     return Redirect("~/Profile/Index?Error=El formato de la imagen es incorrecto");
-                return Redirect("~/Profile/Index?Error="+ex.Message);
+                return Redirect("~/Profile/Index?Error=" + ex.Message);
             }
 
         }

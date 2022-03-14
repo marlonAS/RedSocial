@@ -30,5 +30,8 @@ namespace RedSocial.DB
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<Comments> Comments { get; set; }
+        public virtual DbSet<Likes> Likes { get; set; }
+        public virtual DbSet<Posts> Posts { get; set; }
     }
 }

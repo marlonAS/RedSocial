@@ -34,9 +34,9 @@
             <div class="list-group list-group-flush">
                 @if (Request.IsAuthenticated)
                 {
-                    @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
+                    @Html.ActionLink("Feed", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
                     @Html.ActionLink("Perfil", "Index", "Profile", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
-                    @Html.ActionLink("Feed", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
+                    @Html.ActionLink("Otros perfiles", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "list-group-item list-group-item-action bg-light" })
                 }
 
             </div>
