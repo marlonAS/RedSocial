@@ -7,13 +7,10 @@ namespace RedSocial.Filtros
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            if (!System.Web.HttpContext.Current.User.Identity.IsAuthenticated && !(filterContext.Controller is AccountController))
             {
-                if (!(filterContext.Controller is AccountController))
-                {
-                    filterContext.HttpContext.Response.Redirect("~/Account/Login");
-                }
-            };
+                filterContext.HttpContext.Response.Redirect("~/Account/Login");
+            }
             base.OnActionExecuting(filterContext);
         }
     }
