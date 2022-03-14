@@ -1,6 +1,6 @@
-﻿<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+﻿@using Microsoft.AspNet.Identity
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 <!doctype html>
 <html lang="en">
@@ -20,8 +20,35 @@
     </style>
 </head>
 <body>
-
+    <script>
+    function crearPost() {
+            //    fetch("http://localhost:57362/api/Posts", {
+            //        method: 'GET',
+            //        mode: 'no-cors',
+            //        headers: {
+            //            "Content-type": "application/json"
+            //        },
+            //        //body: JSON.stringify({ Mensaje: $("message").val(), Fecha: new Date() })
+            //    }).then(function (response) { console.log(response) })
+            //        .then(function (data) {
+            //            console.log(data)
+            //        })
+            $.ajax({
+                method: "POST",
+                url: "http://localhost:57362/api/Posts",
+                data: JSON.stringify({
+                    Mensaje: $("#message").val(), Fecha: new Date(), UserName: $("#user").val()
+                }),
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+                    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+                    'Content-Type': 'application/json ; charset=utf-8'
+                },
+            });
+        }</script>
     <div class="container-fluid my-5">
+        <input id="user" type="hidden" value="@User.Identity.GetUserName()">
         <div class="row">
             <div class="col-12">
                 <!--- Post Form Begins -->
@@ -46,7 +73,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <button type="submit" class="btn btn-primary">share</button>
+                            <button onclick="crearPost()" class="btn btn-primary">share</button>
                         </div>
                     </div>
                 </section>
@@ -303,8 +330,6 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>
