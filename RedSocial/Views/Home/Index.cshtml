@@ -21,7 +21,10 @@
 </head>
 <body>
     <script>
-    function crearPost() {
+        $(document).ready(function () {
+            cargarPosts();
+        });
+        function crearPost() {
             $.ajax({
                 method: "POST",
                 url: "http://localhost:57362/api/Posts",
@@ -34,7 +37,15 @@
                     "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
                     'Content-Type': 'application/json ; charset=utf-8'
                 },
+                success: function (data) {
+                    $("#message").val("");
+                    cargarPosts();
+                },
+                failure: function (r) {
+                    alert(r.responseText);
+                }
             });
+          
         };
     </script>
     <div class="container-fluid my-5">
@@ -66,29 +77,24 @@
                             <button onclick="crearPost()" class="btn btn-primary">share</button>
                         </div>
                     </div>
-                </section>
-                <input type="button" value="cargar" id="btnCargar"/>
+                </section> 
                 <div id="divGet"></div>
                 @section scripts
                 {
                     <script>
-                        $(function () {
-                            $("#btnCargar").click(function () {
-                                $(this).prop("disable", "disabled");
-                                var url = "@Url.Action("cargarPosts","Posts")";
+                            function cargarPosts() {
+                                   var url = "@Url.Action("cargarPosts","Posts")";
                                 $.get(url).done(function (data) {
                                     $("#divGet").empty();
-                                    console.log(data);
                                     $("#divGet").append(data);
                                 })
-                            })
-                        })
+                            }
 
                     </script>
-                    }
+                }
                 <!--- Post Form Ends -->
-             
-          
+
+
             </div>
         </div>
     </div>
