@@ -1,5 +1,5 @@
 # RedSocial
 
-clonar el proyecto
-generar la base de datos a partir del entity
-cambiar rutas locales de consumo de servicios
+1- clonar el proyecto
+2- generar la base de datos a partir del entity
+3- cambiar rutas locales de consumo de servicios
