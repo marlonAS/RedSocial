@@ -16,7 +16,7 @@ namespace RedSocial.Controllers
         {
             using (RedSocialEntities db = new RedSocialEntities())
             {
-                return PartialView("cargarPosts", db.Posts.Include("AspNetUsers").OrderByDescending(p => p.Fecha).ToList());
+                return PartialView("cargarPosts", db.Posts.Include("AspNetUsers").Include("Likes").Include("Comments").OrderByDescending(p => p.Fecha).ToList());
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿@model RedSocial.Models.ProfileViewModel
+﻿@using Microsoft.AspNet.Identity
+@model RedSocial.Models.ProfileViewModel
 @{
     ViewBag.Title = "Perfil";
 }
@@ -11,7 +12,7 @@
 {
     <script>
         function() {
-           Alert(ViewBag.Error);
+            Alert(ViewBag.Error);
         }</script>
 }
 
@@ -24,14 +25,9 @@
             <!--left col-->
 
             <div class="text-center">
-                <img src="@Url.Action("imagen","Profile")" class="avatar img-circle img-thumbnail" alt="avatar">
+                <img src="@Url.Action("imagen","Profile",new {userID=@User.Identity.GetUserId() })" class="avatar img-circle img-thumbnail" alt="avatar">
                 <input accept="image/*" type="file" class="form-control" id="Imagen" name="Imagen">
             </div><br>
-
-            <ul class="list-group">
-                <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-            </ul>
 
         </div><!--/col-3-->
         <div class="col-sm-9">

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PostsServices.DB;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using PostsServices.DB;
 
 namespace PostsServices.Controllers
 {
@@ -78,8 +75,14 @@ namespace PostsServices.Controllers
             {
                 return BadRequest(ModelState);
             }
+            Likes olikes = db.Likes.Where(p => p.PostId == likes.PostId && p.UserID == likes.UserID).FirstOrDefault();
+            if (olikes == null)
+            {
+                db.Likes.Add(likes);
+            }
+            else
+                db.Likes.Remove(olikes);
 
-            db.Likes.Add(likes);
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = likes.Id }, likes);

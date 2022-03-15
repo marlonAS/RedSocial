@@ -20,34 +20,6 @@
     </style>
 </head>
 <body>
-    <script>
-        $(document).ready(function () {
-            cargarPosts();
-        });
-        function crearPost() {
-            $.ajax({
-                method: "POST",
-                url: "http://localhost:57362/api/Posts",
-                data: JSON.stringify({
-                    Mensaje: $("#message").val(), Fecha: new Date(), UserID: $("#user").val()
-                }),
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
-                    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
-                    'Content-Type': 'application/json ; charset=utf-8'
-                },
-                success: function (data) {
-                    $("#message").val("");
-                    cargarPosts();
-                },
-                failure: function (r) {
-                    alert(r.responseText);
-                }
-            });
-          
-        };
-    </script>
     <div class="container-fluid my-5">
         <input id="user" type="hidden" value="@User.Identity.GetUserId()">
         <div class="row">
@@ -77,19 +49,88 @@
                             <button onclick="crearPost()" class="btn btn-primary">share</button>
                         </div>
                     </div>
-                </section> 
+                </section>
                 <div id="divGet"></div>
                 @section scripts
                 {
                     <script>
                             function cargarPosts() {
-                                   var url = "@Url.Action("cargarPosts","Posts")";
+                                 var url = "@Url.Action("cargarPosts","Posts")";
                                 $.get(url).done(function (data) {
                                     $("#divGet").empty();
                                     $("#divGet").append(data);
                                 })
                             }
+                        ; function addLike(postID) {
+                            $.ajax({
+                                method: "POST",
+                                url: "http://localhost:57362/api/Likes",
+                                data: JSON.stringify({
+                                    UserID: "@User.Identity.GetUserId()", Fecha: new Date(), PostId: postID
+                                }),
+                                headers: {
+                                    'Access-Control-Allow-Origin': '*',
+                                    "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+                                    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+                                    'Content-Type': 'application/json ; charset=utf-8'
+                                },
+                                success: function (data) {
+                                    cargarPosts();
+                                },
+                                failure: function (r) {
+                                    alert(r.responseText);
+                                }
+                            });
 
+                        };
+                        function addComment(postID) {
+                            $.ajax({
+                                method: "POST",
+                                url: "http://localhost:57362/api/Comments",
+                                data: JSON.stringify({
+                                   UserID: "@User.Identity.GetUserId()", Fecha: new Date(), PostId: postID, Mensaje : $("#message"+postID).val()
+                                }),
+                                headers: {
+                                    'Access-Control-Allow-Origin': '*',
+                                    "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+                                    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+                                    'Content-Type': 'application/json ; charset=utf-8'
+                                },
+                                success: function (data) {
+                                    cargarPosts();
+                                },
+                                failure: function (r) {
+                                    alert(r.responseText);
+                                }
+                            });
+
+                        };
+                        $(document).ready(function () {
+                            cargarPosts();
+                        });
+                        function crearPost() {
+                            $.ajax({
+                                method: "POST",
+                                url: "http://localhost:57362/api/Posts",
+                                data: JSON.stringify({
+                                    Mensaje: $("#message").val(), Fecha: new Date(), UserID: $("#user").val()
+                                }),
+                                headers: {
+                                    'Access-Control-Allow-Origin': '*',
+                                    "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+                                    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+                                    'Content-Type': 'application/json ; charset=utf-8'
+                                },
+                                success: function (data) {
+                                    $("#message").val("");
+                                    cargarPosts();
+                                },
+                                failure: function (r) {
+                                    alert(r.responseText);
+                                }
+                            });
+
+                        };
                     </script>
                 }
                 <!--- Post Form Ends -->

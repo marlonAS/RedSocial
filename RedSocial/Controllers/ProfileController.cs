@@ -27,7 +27,6 @@ namespace RedSocial.Controllers
                          }).FirstOrDefault();
 
             }
-            ViewBag.Imagen = new WebImage(model.Foto);
             ViewBag.Error = Error;
             return View(model);
         }
@@ -37,16 +36,18 @@ namespace RedSocial.Controllers
             try
             {
                 HttpPostedFileBase http = Request.Files[0];
-                WebImage webImage = new WebImage(http.InputStream);
-                model.Foto = webImage.GetBytes();
-
+                if (http.ContentLength > 0)
+                {
+                    WebImage webImage = new WebImage(http.InputStream);
+                    model.Foto = webImage.GetBytes();
+                }
                 using (RedSocialEntities db = new RedSocialEntities())
                 {
                     var odb = db.AspNetUsers.Where(d => d.UserName == System.Web.HttpContext.Current.User.Identity.Name).FirstOrDefault();
                     odb.Nombre = model.Nombre;
                     odb.Apellido = model.Apellido;
                     odb.PhoneNumber = model.Telefono;
-                    odb.Foto = model.Foto;
+                    odb.Foto = model.Foto == null ? odb.Foto : model.Foto;
 
                     db.Entry(odb).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
@@ -61,14 +62,14 @@ namespace RedSocial.Controllers
             }
 
         }
-        public ActionResult imagen()
+        public ActionResult imagen(string userID)
         {
             try
             {
                 using (RedSocialEntities db = new RedSocialEntities())
                 {
                     var model = (from d in db.AspNetUsers
-                                 where d.UserName == System.Web.HttpContext.Current.User.Identity.Name
+                                 where d.Id == userID
                                  select d.Foto
                          ).FirstOrDefault();
 
